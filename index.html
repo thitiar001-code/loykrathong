@@ -2565,7 +2565,9 @@ const sound = (() => {
   function fit() {
     const r = cv.getBoundingClientRect();
     if (!r.width || !r.height) return;
-    const dockH = Math.min(r.height * .4, dock.getBoundingClientRect().height + 20);
+    // measure only the wish form: notices that pop up above it (toast, candle card, follow chip) float over
+    // the water instead of re-zooming the scene and re-cutting every sheet at a new size each time
+    const dockH = Math.min(r.height * .4, $('wish-form').getBoundingClientRect().height + 20);
     const sceneH = Math.max(200, r.height - dockH), aspect = r.width / sceneH;
     // css px per world unit. Wide screens used to see the whole 1440-tall world, so the temple shrank to a
     // sliver in the middle; now they crop sky (down to just above the scene's tallest spire) and a strip of
@@ -2590,7 +2592,7 @@ const sound = (() => {
     P.detail(K); // light and draw paper at screen resolution
   }
   new ResizeObserver(fit).observe(cv);
-  new ResizeObserver(fit).observe(dock);
+  new ResizeObserver(fit).observe($('wish-form'));
   fit();
 
   // --- notes: one glass toast for everything the page needs to say
